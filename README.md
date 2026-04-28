@@ -15,7 +15,7 @@ The lab guides users through the transition from manual "housekeeping" tasks to 
 
 ## 🚀 Lab Overview
 
-### Lab 1: Iveberg fundamentals
+### Lab 1: Iceberg fundamentals
 The lab begins with a recap of Apache Iceberg fundamentals.
 
 ### Phase 2: Manual Housekeeping
