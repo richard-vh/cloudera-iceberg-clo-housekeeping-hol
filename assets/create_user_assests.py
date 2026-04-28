@@ -1,3 +1,11 @@
+# =============================================================================
+# 0. !!!ONLY FOR INSTRUCTOR - LAB ASSESTS PROVISIONING CODE!!!!!
+# Run the following code in a Python session inside your CAI workbench
+# It will create CAI project, database and tables for each user to use in the labs
+# Only thing you need to change in this script is the NUM_ATTENDEES value to the
+# number of people that will be doing the HOL.
+# =============================================================================
+
 import os
 import re
 import time
