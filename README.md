@@ -6,14 +6,19 @@ The lab guides users through the transition from manual "housekeeping" tasks to 
 
 ## 📂 Project Structure
 
-* **`lab0-before-you-start.ipynb`**: Introduction to the Hand-on Lab enviornment.
-* **`lab1-introduction-iceberg-with-spark.ipynb`**: Covers Iceberg fundamentals, including table creation, ACID transactions, schema/partition evolution, and time travel.
-* **`lab2-iceberg-housekeeping-hol.ipynb`**: The primary lab notebook covering manual compaction, snapshot expiration, and the configuration of automated CLO policies.
-* **`get_table_stats.py`**: A utility script used to perform physical S3 scans and logical Spark audits to identify "Small File Syndrome" and metadata bloat.
-* **`assets/create_user_assets.py`**: A provisioning script used to generate "bloated" tables for users and CAI projects for working in.
+* **`LAB0-before-you-start.ipynb`**: Introduction to the Hand-on Lab enviornment.
+* **`LAB1-introduction-iceberg-with-spark.ipynb`**: Covers Iceberg fundamentals, including table creation, ACID transactions, schema/partition evolution, and time travel.
+* **`LAB2-iceberg-housekeeping-spark.ipynb`**: The primary lab notebook covering manual compaction, snapshot expiration, and the configuration of automated CLO policies.
+* **`LAB3-iceberg-housekeeping-clo.ipynb`**: Introduces Lakehouse Optimizer and setting up and running automated CLO policies.
 * **`assets/`**: Contains images used throughout the lab documentation.
+* **`assets/create_user_assets.py`**: A provisioning script used to generate "bloated" tables for users and CAI projects for working in.
+* **`assets/get_table_stats.py`**: A utility script used to perform physical S3 scans and logical Spark audits to identify "Small File Syndrome" and metadata bloat.**
+
 
 ## 🚀 Lab Overview
+
+### Lab 0: Before you start
+Logon to the hands-on lab and familiarise yourself with the enviornment
 
 ### Lab 1: Iceberg fundamentals
 The lab begins with a recap of Apache Iceberg fundamentals.
