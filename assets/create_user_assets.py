@@ -106,7 +106,7 @@ for i in range(1, NUM_ATTENDEES + 1):
     create_url = f"{v1_base_url}/users/{USERNAME}/projects"
     payload = {
         "name": project_name,
-        "project_visibility": "private",
+        "project_visibility": "public",
         "template": "git",
         "gitUrl": GIT_REPO_URL,
         "isPrototype": False,
