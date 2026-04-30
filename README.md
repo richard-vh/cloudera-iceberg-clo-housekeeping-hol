@@ -23,14 +23,14 @@ Logon to the hands-on lab and familiarise yourself with the enviornment
 ### Lab 1: Iceberg fundamentals
 The lab begins with a recap of Apache Iceberg fundamentals.
 
-### Lab 2: Manual Housekeeping
+### Lab 2: Manual Housekeeping Optimisation of Iceberg with Spark
 Users learn the technical "why" behind table maintenance:
 * **Identifying Bloat**: Using `get_table_stats.py` to find tables with high file counts and tiny average file sizes.
 * **Manual Compaction**: Running `CALL system.rewrite_data_files` to merge small Parquet files into optimized 128MB chunks.
 * **Benchmarking**: Proving performance gains by comparing execution times between bloated and optimized tables.
 * **Storage Reclamation**: Manually expiring snapshots to physically delete orphaned data files from S3.
 
-### Lab 3: Automated Optimization with CLO
+### Lab 3: Automated Housekeeping Optimization of Iceberg with CLO
 The second half introduces the **Cloudera Lakehouse Optimizer (CLO)**, a "set-and-forget" service:
 * **Intelligent Policies**: Configuring automated schedules and maintenance rules based on table health metrics.
 * **Scale**: Transitioning from manual code for every table to managing thousands of tables via a single interface.
