@@ -25,8 +25,8 @@ The lab begins with a recap of Apache Iceberg fundamentals.
 
 ### Lab 2: Manual Housekeeping Optimisation of Iceberg with Spark
 Users learn the technical "why" behind table maintenance:
-* **Identifying Bloat**: Using `get_table_stats.py` to find tables with high file counts and tiny average file sizes.
-* **Manual Compaction**: Running `CALL system.rewrite_data_files` to merge small Parquet files into optimized 128MB chunks.
+* **Identifying Bloat**: Analysing tables with high file counts and tiny average file sizes.
+* **Manual Compaction**: Manually running compaction to merge small Parquet files into optimized 128MB chunks.
 * **Benchmarking**: Proving performance gains by comparing execution times between bloated and optimized tables.
 * **Storage Reclamation**: Manually expiring snapshots to physically delete orphaned data files from S3.
 
