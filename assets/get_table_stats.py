@@ -14,7 +14,7 @@ IMPALA_CONNECTION_NAME = "instructor-dm-dh"
 conn_impala = cmldata.get_connection(IMPALA_CONNECTION_NAME)
 
 # 2. Parameters
-BUCKET = "rvh-buk-f220581f"
+BUCKET = "hol-buk-2cb5568f"
 
 if len(sys.argv) < 3:
     print("Error: Please provide database and table name.")
