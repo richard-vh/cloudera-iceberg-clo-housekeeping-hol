@@ -10,7 +10,7 @@ conn_s3 = cmldata.get_connection(S3_CONNECTION_NAME)
 client = conn_s3.get_base_connection()
 
 # Impala Connection for Metadata
-IMPALA_CONNECTION_NAME = "rvh-datamart-1"
+IMPALA_CONNECTION_NAME = "instructor-dm-dh"
 conn_impala = cmldata.get_connection(IMPALA_CONNECTION_NAME)
 
 # 2. Parameters
