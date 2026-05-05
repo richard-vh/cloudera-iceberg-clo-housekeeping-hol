@@ -28,10 +28,13 @@ GIT_REPO_URL = "https://github.com/richard-vh/cloudera-iceberg-clo-housekeeping-
 PROJECT_NAME_PATTERN = r"user\d+_hol"
 RUNTIME_IMAGE_NAME = "docker.repository.cloudera.com/cloudera/cdsw/ml-runtime-pbj-jupyterlab-python3.12-standard:2026.04.1-b7"
 
+# Set the Workload Password for the lab environments here
+WORKLOAD_PASSWORD = "<enter_assigned_password>"
+
 # Spark Tuning (Bloat Control)
 NUM_COMMITS = 30           
 RECORDS_PER_COMMIT = 500000 
-FILES_PER_COMMIT = 25      
+FILES_PER_COMMIT = 25       
 # =============================================================================
 
 # 2. INITIALIZE CLIENT & ROTATE KEY
@@ -93,6 +96,16 @@ spark.sparkContext.setLogLevel("ERROR")
 spark.conf.set("spark.sql.adaptive.enabled", "false")
 
 
+# 4.5 FORCE USER SYNC WITH IDENTITY PROVIDER
+print("\n--- Syncing Users with Identity Provider ---")
+sync_url = f"{v1_base_url}/site/users?"
+sync_resp = requests.patch(sync_url, json={}, auth=auth)
+if sync_resp.status_code in [200, 204]:
+    print("✅ All users successfully synced and provisioned in the workspace.")
+else:
+    print(f"⚠️ User sync failed (you may need Workspace Admin rights): {sync_resp.text}")
+
+
 # 5. PROVISIONING LOOP
 print(f"\n--- Provisioning {NUM_ATTENDEES} Attendees ---")
 
@@ -117,11 +130,48 @@ for i in range(1, NUM_ATTENDEES + 1):
     try:
         response = requests.post(create_url, json=payload, auth=auth)
         if response.status_code in [200, 201]:
-            print(f"[{user_name}] CML Project created.")
+            print(f"\n[{user_name}] CML Project created.")
+            
+            # --- USER-LEVEL WORKLOAD PASSWORD INJECTION ---
+            env_url = f"{v1_base_url}/users/{user_name}/environment?"
+            env_payload = {"environment": {"WORKLOAD_PASSWORD": WORKLOAD_PASSWORD}}
+            env_resp = requests.patch(env_url, json=env_payload, auth=auth)
+            
+            if env_resp.status_code in [200, 201, 204]:
+                print(f"   [{user_name}] WORKLOAD_PASSWORD environment variable set successfully.")
+            else:
+                print(f"   [{user_name}] Failed to set WORKLOAD_PASSWORD: {env_resp.text}")
+
+            # --- TRANSFER PROJECT OWNERSHIP (MOVED UP) ---
+            # 1. Look up the internal user ID
+            user_info_url = f"{v1_base_url}/users/{user_name}"
+            user_info_resp = requests.get(user_info_url, auth=auth)
+            
+            if user_info_resp.status_code == 200:
+                attendee_id = user_info_resp.json().get("id")
+                
+                # 2. Patch the project with the new owner ID
+                transfer_url = f"{v1_base_url}/projects/{USERNAME}/{project_name}?"
+                transfer_payload = {
+                    "name": project_name,
+                    "description": "",
+                    "project_visibility": "public",
+                    "newOwnerId": attendee_id
+                }
+                transfer_resp = requests.patch(transfer_url, json=transfer_payload, auth=auth)
+                
+                if transfer_resp.status_code in [200, 204]:
+                    print(f"   [{user_name}] Ownership successfully transferred to {user_name} (ID: {attendee_id}).")
+                else:
+                    print(f"   [{user_name}] Ownership transfer failed: {transfer_resp.text}")
+            else:
+                print(f"   [{user_name}] Failed to retrieve user ID, skipping ownership transfer.")
+
         else:
             print(f"[{user_name}] Creation failed: {response.text}")
 
-        # Data Generation
+        # --- DATA GENERATION (HAPPENS IN BACKGROUND RELATIVE TO THE ATTENDEE) ---
+        print(f"   [{user_name}] Starting Iceberg data generation...")
         main_table = f"{user_db}.sensor_telemetry"
         orig_table = f"{user_db}.sensor_telemetry_original"
         
